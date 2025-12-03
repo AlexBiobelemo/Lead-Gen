@@ -19,6 +19,94 @@ Lead Gen is a comprehensive application designed to streamline lead generation, 
 *   **Frontend:** HTML, CSS, JavaScript
 *   **AI/ML:** (Implied by AI Lead Generation, specific libraries not provided)
 
+### 🖼️ Project Screenshots
+
+<div align="center">
+    <strong>AI Email Generation Tool</strong>
+    <img src="https://raw.githubusercontent.com/AlexBiobelemo/Lead-Gen/main/Media/ai%20email%20gen.png" alt="AI Email Generation Tool Screenshot"/>
+</div>
+<br>
+---
+<br>
+
+<div align="center">
+    <strong>AI Lead Generation Screenshot</strong>
+    <img src="https://raw.githubusercontent.com/AlexBiobelemo/Lead-Gen/main/Media/ai%20gen%20leads.png" alt="AI Lead Generation Screenshot"/>
+</div>
+<br>
+---
+<br>
+
+<div align="center">
+    <strong>AI Lead Chat Planner Interface</strong>
+    <img src="https://raw.githubusercontent.com/AlexBiobelemo/Lead-Gen/main/Media/ai%20lead%20chat_planner.png" alt="AI Lead Chat Planner Interface"/>
+</div>
+<br>
+---
+<br>
+
+<div align="center">
+    <strong>Analytics Dashboard View</strong>
+    <img src="https://raw.githubusercontent.com/AlexBiobelemo/Lead-Gen/main/Media/analytics%20dashboard.png" alt="Analytics Dashboard View"/>
+</div>
+<br>
+---
+<br>
+
+<div align="center">
+    <strong>Analytics Platform Distribution Chart</strong>
+    <img src="https://raw.githubusercontent.com/AlexBiobelemo/Lead-Gen/main/Media/analytics%20platform%20distribution.png" alt="Analytics Platform Distribution Chart"/>
+</div>
+<br>
+---
+<br>
+
+<div align="center">
+    <strong>Central Dashboard Overview</strong>
+    <img src="https://raw.githubusercontent.com/AlexBiobelemo/Lead-Gen/main/Media/central%20dashboard.png" alt="Central Dashboard Overview"/>
+</div>
+<br>
+---
+<br>
+
+<div align="center">
+    <strong>Engagement Calculator Tool</strong>
+    <img src="https://raw.githubusercontent.com/AlexBiobelemo/Lead-Gen/main/Media/engagement%20calculator.png" alt="Engagement Calculator Tool"/>
+</div>
+<br>
+---
+<br>
+
+<div align="center">
+    <strong>Import Leads Feature</strong>
+    <img src="https://raw.githubusercontent.com/AlexBiobelemo/Lead-Gen/main/Media/import%20leads.png" alt="Import Leads Feature"/>
+</div>
+<br>
+---
+<br>
+
+<div align="center">
+    <strong>Leads Profile View I</strong>
+    <img src="https://raw.githubusercontent.com/AlexBiobelemo/Lead-Gen/main/Media/leads%20profile%20I.png" alt="Leads Profile View I"/>
+</div>
+<br>
+---
+<br>
+
+<div align="center">
+    <strong>Leads Profile View II</strong>
+    <img src="https://raw.githubusercontent.com/AlexBiobelemo/Lead-Gen/main/Media/leads%20profile%20II.png" alt="Leads Profile View II"/>
+</div>
+<br>
+---
+<br>
+
+<div align="center">
+    <strong>Web Scrape Leads Feature</strong>
+    <img src="https://raw.githubusercontent.com/AlexBiobelemo/Lead-Gen/main/Media/web%20scrape%20leads.png" alt="Web Scrape Leads Feature"/>
+</div>
+
+
 ## Getting Started
 
 ### Prerequisites

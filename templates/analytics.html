@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block title %}Analytics - Lead Generation App{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <h2 class="mb-4">
+        <i class="bi bi-bar-chart-fill text-primary me-2"></i>
+        Analytics Dashboard
+    </h2>
+
+    <!-- Summary Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3 mb-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body text-center">
+                    <i class="bi bi-people-fill fs-1 text-primary"></i>
+                    <h3 class="mt-2">{{ stats.total_leads }}</h3>
+                    <p class="text-muted mb-0">Total Leads</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body text-center">
+                    <i class="bi bi-graph-up fs-1 text-success"></i>
+                    <h3 class="mt-2">{{ stats.avg_followers|format_number }}</h3>
+                    <p class="text-muted mb-0">Avg Followers</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body text-center">
+                    <i class="bi bi-lightning-fill fs-1 text-warning"></i>
+                    <h3 class="mt-2">{{ stats.avg_engagement|format_percentage }}</h3>
+                    <p class="text-muted mb-0">Avg Engagement</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body text-center">
+                    <i class="bi bi-star-fill fs-1 text-info"></i>
+                    <h3 class="mt-2">{{ stats.total_followers|format_number }}</h3>
+                    <p class="text-muted mb-0">Total Reach</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Platform Distribution -->
+        <div class="col-md-6 mb-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0">Platform Distribution</h5>
+                </div>
+                <div class="card-body">
+                    {% for platform, data in stats.by_platform.items() %}
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between mb-1">
+                            <span class="text-capitalize">{{ platform }}</span>
+                            <span class="fw-bold">{{ data.count }} leads</span>
+                        </div>
+                        <div class="progress" style="height: 25px;">
+                            <div class="progress-bar bg-primary" style="width: {{ (data.count / stats.total_leads * 100)|round|int }}%">
+                                {{ (data.count / stats.total_leads * 100)|round|int }}%
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Top Performers -->
+        <div class="col-md-6 mb-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0">Top Performers</h5>
+                </div>
+                <div class="card-body">
+                    <div class="list-group list-group-flush">
+                        {% for lead in top_performers %}
+                        <a href="{{ url_for('view_lead', lead_id=lead.id) }}" class="list-group-item list-group-item-action">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <strong>{{ lead.username }}</strong>
+                                    <br>
+                                    <small class="text-muted">{{ lead.followers|format_number }} followers</small>
+                                </div>
+                                <span class="badge bg-success fs-6">{{ lead.engagement_score }}%</span>
+                            </div>
+                        </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tags Cloud -->
+    {% if all_tags %}
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-header bg-light">
+            <h5 class="mb-0">Popular Tags</h5>
+        </div>
+        <div class="card-body popular-tags-container">
+            {% for tag in all_tags %}
+                {% if tag %}
+                    <a href="{{ url_for('dashboard', search=tag) }}" class="badge bg-primary text-decoration-none me-1 mb-1">{{ tag }}</a>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

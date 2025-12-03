@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}Engagement Calculator - Lead Generation App{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <h2 class="mb-4">
+                <i class="bi bi-calculator-fill text-primary me-2"></i>
+                Engagement Calculator
+            </h2>
+
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <form method="POST">
+                        {{ form.hidden_tag() }}
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">{{ form.followers.label }}</label>
+                            {{ form.followers(class="form-control" + (" is-invalid" if form.followers.errors else "")) }}
+                            {% if form.followers.errors %}
+                                <div class="invalid-feedback">{{ form.followers.errors[0] }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">{{ form.avg_likes.label }}</label>
+                            {{ form.avg_likes(class="form-control") }}
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">{{ form.avg_comments.label }}</label>
+                            {{ form.avg_comments(class="form-control") }}
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-lg w-100">
+                            <i class="bi bi-calculator me-2"></i> Calculate Score
+                        </button>
+                    </form>
+
+                    {% if result %}
+                    <hr class="my-4">
+                    <div class="text-center">
+                        <h4 class="text-muted mb-2">Engagement Score</h4>
+                        <h1 class="display-1 text-primary fw-bold">{{ result.score }}</h1>
+                        <div class="progress mt-3" style="height: 30px;">
+                            <div class="progress-bar bg-{{ 'success' if result.score > 50 else 'warning' if result.score > 25 else 'danger' }}" 
+                                 style="width: {{ result.score }}%">
+                                {{ result.score }}%
+                            </div>
+                        </div>
+                        <p class="mt-3 text-muted">
+                            Based on {{ result.followers|format_number }} followers, 
+                            {{ result.avg_likes }} avg likes, 
+                            {{ result.avg_comments }} avg comments
+                        </p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="alert alert-info mt-4">
+                <i class="bi bi-info-circle me-2"></i>
+                <strong>How it works:</strong> The engagement score is calculated based on the ratio of interactions 
+                (likes and comments) to follower count, with bonuses for larger audiences.
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

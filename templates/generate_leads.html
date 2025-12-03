@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Generate Leads with Gemini AI</h2>
+    <p>Use the power of AI to generate potential leads based on your criteria.</p>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            Generate Leads
+        </div>
+        <div class="card-body">
+            <form method="POST" action="{{ url_for('generate_ai_leads') }}">
+                {{ form.hidden_tag() }}
+                <div class="form-group">
+                    {{ form.prompt.label(class="form-label") }}
+                    {{ form.prompt(class="form-control", rows="5") }}
+                    {% for error in form.prompt.errors %}
+                        <div class="alert alert-danger mt-1">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                <button type="submit" class="btn btn-primary mt-3">Generate Leads</button>
+            </form>
+        </div>
+    </div>
+
+    {% if generated_leads %}
+    <div class="card mt-4">
+        <div class="card-header">
+            Generated Leads ({{ generated_leads|length }})
+        </div>
+        <div class="card-body">
+            <form method="POST" action="{{ url_for('add_generated_leads') }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="select_all_leads" aria-label="Select all generated leads"></th>
+                            <th>Username</th>
+                            <th>Full Name</th>
+                            <th>Platform</th>
+                            <th>Followers</th>
+                            <th>Email</th>
+                            <th>Website</th>
+                            <th>Location</th>
+                            <th>Engagement Score</th>
+                            <th>Tags</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for lead in generated_leads %}
+                        <tr>
+                            <td><input type="checkbox" name="selected_leads" value="{{ loop.index0 }}" aria-label="Select generated lead {{ loop.index0 + 1 }}"></td>
+                            <td>{{ lead.username }}</td>
+                            <td>{{ lead.full_name }}</td>
+                            <td>{{ lead.platform }}</td>
+                            <td>{{ lead.followers|format_number }}</td>
+                            <td>{{ lead.email or 'N/A' }}</td>
+                            <td><a href="{{ lead.website }}" target="_blank">{{ lead.website or 'N/A' }}</a></td>
+                            <td>{{ lead.location or 'N/A' }}</td>
+                            <td>{{ lead.engagement_score|format_number }}</td>
+                            <td>
+                                {% for tag in lead.tags %}
+                                    <span class="badge bg-info text-dark">{{ tag }}</span>
+                                {% endfor %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <button type="submit" class="btn btn-success mt-3">Add Selected Leads to Database</button>
+            </form>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+    document.getElementById('select_all_leads').onclick = function() {
+        var checkboxes = document.querySelectorAll('input[name="selected_leads"]');
+        for (var checkbox of checkboxes) {
+            checkbox.checked = this.checked;
+        }
+    }
+</script>
+{% endblock %}

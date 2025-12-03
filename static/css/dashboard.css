@@ -1,0 +1,200 @@
+.stat-card {
+    transition: all 0.3s ease-in-out;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+}
+
+.stat-icon {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.stat-icon i {
+    font-size: 2rem;
+}
+
+.bg-primary-light {
+    background-color: rgba(var(--bs-primary-rgb), 0.1);
+}
+
+.bg-success-light {
+    background-color: rgba(var(--bs-success-rgb), 0.1);
+}
+
+.bg-warning-light {
+    background-color: rgba(var(--bs-warning-rgb), 0.1);
+}
+
+.lead-dashboard-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.lead-dashboard-table th,
+.lead-dashboard-table td {
+    vertical-align: middle !important;
+    padding: 0.75rem !important;
+    border-top: 1px solid #dee2e6 !important; /* Light border for separation */
+    text-align: left !important;
+}
+
+/* Styles for dynamically added rows */
+#leads-container tr {
+    border-top: 1px solid #dee2e6 !important;
+}
+
+#leads-container td {
+    vertical-align: middle !important;
+    padding: 0.75rem !important;
+    text-align: left !important;
+}
+
+
+/* Adjust progress bar within table for better alignment */
+.lead-dashboard-table .progress,
+#leads-container .progress {
+    height: 18px !important;
+    margin-bottom: 0 !important;
+    display: inline-flex !important; 
+    vertical-align: middle !important;
+    width: 100% !important;
+}
+
+.lead-dashboard-table .progress-bar,
+#leads-container .progress-bar {
+    font-size: 0.75rem !important;
+    line-height: 18px !important;
+}
+
+/* Ensure badge alignment */
+.lead-dashboard-table .badge,
+#leads-container .badge {
+    vertical-align: middle !important;
+}
+
+/* Specific adjustments for action buttons */
+.lead-dashboard-table .btn-group-sm .btn,
+#leads-container .btn-group-sm .btn {
+    padding: 0.25rem 0.5rem !important;
+    font-size: 0.75rem !important;
+}
+
+@media (max-width: 768px) {
+    .d-flex.flex-wrap.gap-2 {
+        flex-direction: row; /* Keep buttons horizontal */
+        justify-content: flex-start;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .d-flex.flex-wrap.gap-2 .btn {
+        width: auto;
+        margin-bottom: 0.5rem;
+        margin-right: 0.5rem; /* Add some spacing between buttons */
+    }
+
+    #filterForm .row > div {
+        margin-bottom: 1rem;
+    }
+
+    #leadsTable thead {
+        display: none;
+    }
+
+    #leadsTable, #leadsTable tbody, #leadsTable tr, #leadsTable td {
+        display: block;
+        width: 100%;
+    }
+
+    #leadsTable tr {
+        margin-bottom: 1.5rem;
+        border: 1px solid #ddd;
+        border-radius: 0.25rem;
+        padding: 0.5rem;
+    }
+
+    #leadsTable td {
+        text-align: left;
+        padding: 0.75rem 0.75rem 0.75rem 45% !important;
+        position: relative;
+        border: none;
+        margin-bottom: 0.5rem;
+        display: block;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+
+    #leadsTable td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 0.75rem;
+        width: 40%;
+        font-weight: bold;
+        text-align: left;
+        white-space: normal;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+
+    #leadsTable td:first-child {
+        padding-left: 0.75rem !important;
+    }
+
+    #leadsTable td:first-child::before {
+        display: none;
+    }
+
+    .lead-dashboard-table .btn-group {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 0.25rem;
+    }
+
+    .lead-dashboard-table .btn-group .btn {
+        width: auto;
+        margin-bottom: 0;
+        margin-left: 0;
+        padding: 0.25rem 0.5rem !important;
+        font-size: 0.75rem !important;
+    }
+
+    /* Ensure progress bars don't overflow */
+    #leadsTable .progress {
+        width: 100% !important;
+        height: 18px !important;
+    }
+
+    /* Ensure badges wrap properly */
+    #leadsTable .badge {
+        display: inline-block;
+        margin-right: 0.25rem;
+        margin-bottom: 0.25rem;
+    }
+}
+
+@media (max-width: 576px) {
+    #leadsTable td {
+        padding: 0.5rem 0.5rem 0.5rem 50% !important;
+    }
+
+    #leadsTable td::before {
+        left: 0.5rem;
+        width: 45%;
+        font-size: 0.85rem;
+    }
+
+    .lead-dashboard-table .btn-group .btn {
+        padding: 0.2rem 0.4rem !important;
+        font-size: 0.7rem !important;
+    }
+}

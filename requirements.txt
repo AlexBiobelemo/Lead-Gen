@@ -1,0 +1,17 @@
+Flask
+Flask-SQLAlchemy
+Flask-WTF
+WTForms
+python-dotenv
+email-validator
+Flask-Bootstrap
+Flask-Migrate
+Flask-Mail
+simple-salesforce
+hubspot-api-client
+tweepy
+instagrapi
+google-generativeai
+requests
+BeautifulSoup4
+Markdown

@@ -1,0 +1,368 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Lead Generation App{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Statistics Cards -->
+    <div class="row mb-4">
+        <div class="col-md-4 mb-3">
+            <div class="card stat-card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-muted mb-1">Total Leads</h6>
+                            <h2 class="mb-0 fw-bold text-primary">{{ stats.total_leads|format_number }}</h2>
+                        </div>
+                        <div class="stat-icon bg-primary-light">
+                            <i class="bi bi-people-fill text-primary"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-3">
+            <div class="card stat-card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-muted mb-1">Avg Followers</h6>
+                            <h2 class="mb-0 fw-bold text-success">{{ stats.avg_followers|format_number }}</h2>
+                        </div>
+                        <div class="stat-icon bg-success-light">
+                            <i class="bi bi-graph-up-arrow text-success"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-3">
+            <div class="card stat-card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-muted mb-1">Avg Engagement</h6>
+                            <h2 class="mb-0 fw-bold text-warning">{{ stats.avg_engagement|format_percentage }}</h2>
+                        </div>
+                        <div class="stat-icon bg-warning-light">
+                            <i class="bi bi-lightning-fill text-warning"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="row mb-3">
+        <div class="col-12">
+            <div class="d-flex flex-wrap gap-2">
+                <a href="{{ url_for('add_lead') }}" class="btn btn-primary">
+                    <i class="bi bi-plus-circle me-2"></i> Add New Lead
+                </a>
+                <a href="{{ url_for('export_leads') }}" class="btn btn-success">
+                    <i class="bi bi-download me-2"></i> Export CSV
+                </a>
+                <button type="button" class="btn btn-outline-danger" id="bulkDeleteBtn" style="display: none;">
+                    <i class="bi bi-trash me-2"></i> Delete Selected
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body">
+            <h5 class="card-title mb-3">
+                <i class="bi bi-funnel-fill me-2"></i> Filters
+            </h5>
+            <form method="GET" action="{{ url_for('dashboard') }}" id="filterForm">
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <label class="form-label">Search</label>
+                        <input type="text" class="form-control" name="search" 
+                               placeholder="Username, name, or bio..." 
+                               value="{{ request.args.get('search', '') }}">
+                    </div>
+                    
+                    <div class="col-md-2">
+                        <label class="form-label">Platform</label>
+                        <select class="form-select" name="platform">
+                            <option value="all" {% if request.args.get('platform') == 'all' or not request.args.get('platform') %}selected{% endif %}>All Platforms</option>
+                            <option value="instagram" {% if request.args.get('platform') == 'instagram' %}selected{% endif %}>Instagram</option>
+                            <option value="twitter" {% if request.args.get('platform') == 'twitter' %}selected{% endif %}>Twitter</option>
+                            <option value="linkedin" {% if request.args.get('platform') == 'linkedin' %}selected{% endif %}>LinkedIn</option>
+                            <option value="facebook" {% if request.args.get('platform') == 'facebook' %}selected{% endif %}>Facebook</option>
+                            <option value="tiktok" {% if request.args.get('platform') == 'tiktok' %}selected{% endif %}>TikTok</option>
+                            <option value="youtube" {% if request.args.get('platform') == 'youtube' %}selected{% endif %}>YouTube</option>
+                        </select>
+                    </div>
+                    
+                    <div class="col-md-2">
+                        <label class="form-label">Min Followers</label>
+                        <input type="number" class="form-control" name="min_followers" 
+                               value="{{ request.args.get('min_followers', '0') }}" min="0">
+                    </div>
+                    
+                    <div class="col-md-2">
+                        <label class="form-label">Min Engagement</label>
+                        <input type="number" class="form-control" name="min_engagement" 
+                               value="{{ request.args.get('min_engagement', '0') }}" min="0" max="100" step="0.1">
+                    </div>
+                    
+                    <div class="col-md-2">
+                        <label class="form-label">Sort By</label>
+                        <select class="form-select" name="sort_by">
+                            <option value="engagement_score" {% if request.args.get('sort_by') == 'engagement_score' %}selected{% endif %}>Engagement</option>
+                            <option value="followers" {% if request.args.get('sort_by') == 'followers' %}selected{% endif %}>Followers</option>
+                            <option value="created_at" {% if request.args.get('sort_by') == 'created_at' %}selected{% endif %}>Date Added</option>
+                            <option value="username" {% if request.args.get('sort_by') == 'username' %}selected{% endif %}>Username</option>
+                        </select>
+                    </div>
+                    
+                    <div class="col-md-1 d-flex align-items-end">
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Leads Table -->
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-0">
+            {% if leads %}
+            <div class="table-responsive">
+                <table class="table table-hover mb-0 lead-dashboard-table" id="leadsTable">
+                    <thead class="table-light">
+                        <tr>
+                            <th style="width: 40px;">
+                                <input type="checkbox" class="form-check-input" id="selectAll">
+                            </th>
+                            <th>Username</th>
+                            <th>Platform</th>
+                            <th>Full Name</th>
+                            <th>Followers</th>
+                            <th>Engagement</th>
+                            <th>Location</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="leads-container">
+                        {% for lead in leads %}
+                        <tr class="lead-dashboard-table-row">
+                            <td data-label="Select">
+                                <input type="checkbox" class="form-check-input lead-checkbox" value="{{ lead.id }}">
+                            </td>
+                            <td data-label="Username">
+                                <strong>{{ lead.username }}</strong>
+                                {% if lead.tags_list %}
+                                <br>
+                                <small>
+                                    {% for tag in lead.tags_list[:3] %}
+                                    <span class="badge bg-light text-dark">{{ tag }}</span>
+                                    {% endfor %}
+                                </small>
+                                {% endif %}
+                            </td>
+                            <td data-label="Platform">
+                                <span class="badge bg-{{ 'danger' if lead.platform == 'instagram' else 'info' if lead.platform == 'twitter' else 'primary' if lead.platform == 'linkedin' else 'secondary' }}">
+                                    <i class="bi bi-{{ 'instagram' if lead.platform == 'instagram' else 'twitter' if lead.platform == 'twitter' else 'linkedin' if lead.platform == 'linkedin' else 'globe' }}"></i>
+                                    {{ lead.platform|capitalize }}
+                                </span>
+                            </td>
+                            <td data-label="Full Name">{{ lead.full_name or '-' }}</td>
+                            <td data-label="Followers">{{ lead.followers|format_number }}</td>
+                            <td data-label="Engagement">
+                                <div class="progress" style="height: 20px;">
+                                    <div class="progress-bar bg-{{ 'success' if lead.engagement_score > 50 else 'warning' if lead.engagement_score > 25 else 'danger' }}"
+                                         role="progressbar"
+                                         aria-label="Engagement score: {{ lead.engagement_score }}%"
+                                         aria-valuenow="{{ lead.engagement_score }}"
+                                         aria-valuemin="0"
+                                         aria-valuemax="100"
+                                         style="width: {{ lead.engagement_score }}%">
+                                        {{ lead.engagement_score }}%
+                                    </div>
+                                </div>
+                            </td>
+                            <td data-label="Location">{{ lead.location or '-' }}</td>
+                            <td data-label="Actions">
+                                <div class="btn-group btn-group-sm">
+                                    <a href="{{ url_for('view_lead', lead_id=lead.id) }}" class="btn btn-outline-primary" title="View">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                    <a href="{{ url_for('ai_chat', lead_id=lead.id) }}" class="btn btn-outline-info" title="AI Chat">
+                                        <i class="bi bi-robot"></i>
+                                    </a>
+                                    <a href="{{ url_for('edit_lead', lead_id=lead.id) }}" class="btn btn-outline-success" title="Edit">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <button type="button" class="btn btn-outline-danger" onclick="deleteLead({{ lead.id }}, '{{ lead.username }}')" title="Delete">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="loading-indicator" class="text-center py-3" style="display: none;">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="text-muted mt-2">Loading more leads...</p>
+            </div>
+
+            {% else %}
+            <div class="text-center py-5">
+                <i class="bi bi-inbox fs-1 text-muted"></i>
+                <h4 class="mt-3 text-muted">No leads found</h4>
+                <p class="text-muted">Try adjusting your filters or <a href="{{ url_for('add_lead') }}">add a new lead</a></p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirm Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete lead <strong id="deleteLeadName"></strong>?</p>
+                <p class="text-danger mb-0">This action cannot be undone.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form method="POST" id="deleteForm">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/infinite_scroll.js') }}"></script>
+<script>
+    const filterForm = document.getElementById('filterForm');
+    const leadsContainer = document.getElementById('leads-container');
+
+    // Function to save filter state and scroll position
+    function saveDashboardState() {
+        const formData = new FormData(filterForm);
+        const filterState = {};
+        for (let [key, value] of formData.entries()) {
+            filterState[key] = value;
+        }
+        sessionStorage.setItem('dashboardFilterState', JSON.stringify(filterState));
+        sessionStorage.setItem('dashboardScrollPosition', window.scrollY);
+    }
+
+    // Function to restore filter state and scroll position
+    function restoreDashboardState() {
+        const savedFilterState = JSON.parse(sessionStorage.getItem('dashboardFilterState'));
+        const savedScrollPosition = sessionStorage.getItem('dashboardScrollPosition');
+
+        if (savedFilterState) {
+            for (const key in savedFilterState) {
+                const input = filterForm.elements[key];
+                if (input) {
+                    if (input.tagName === 'SELECT') {
+                        // For select elements, iterate through options and set 'selected'
+                        Array.from(input.options).forEach(option => {
+                            option.selected = (option.value === savedFilterState[key]);
+                        });
+                    } else if (input.type === 'checkbox' || input.type === 'radio') {
+                        input.checked = (input.value === savedFilterState[key]);
+                    } else {
+                        input.value = savedFilterState[key];
+                    }
+                }
+            }
+            // Only submit the form to re-apply filters if the current URL has no filter parameters,
+            // indicating a direct navigation back to the dashboard without active filters.
+            const currentQueryParams = new URLSearchParams(window.location.search);
+            const hasFilterParamsInUrl = Array.from(currentQueryParams.keys()).some(key => key !== 'page');
+
+            if (!hasFilterParamsInUrl) {
+                filterForm.submit();
+            }
+        }
+
+        if (savedScrollPosition) {
+            // Add a small delay to ensure content is rendered before scrolling
+            setTimeout(() => {
+                window.scrollTo(0, parseInt(savedScrollPosition));
+            }, 100); // 100ms delay
+        }
+    }
+
+    // Save state before navigating away
+    // Save state before navigating away to a lead detail page
+    document.querySelectorAll('a[href*="/view-lead/"], a[href*="/edit-lead/"], a[href*="/ai-chat/"]').forEach(link => {
+        link.addEventListener('click', function(event) {
+            saveDashboardState();
+        });
+    });
+
+    // Restore state on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        restoreDashboardState();
+    });
+
+    // Select all checkbox
+    const selectAllCheckbox = document.getElementById('selectAll');
+    if (selectAllCheckbox) {
+        selectAllCheckbox.addEventListener('change', function() {
+            const checkboxes = document.querySelectorAll('.lead-checkbox');
+            checkboxes.forEach(cb => cb.checked = this.checked);
+            toggleBulkActions();
+        });
+    }
+
+    // Individual checkboxes
+    document.querySelectorAll('.lead-checkbox').forEach(cb => {
+        if (cb) { // Ensure the checkbox exists
+            cb.addEventListener('change', toggleBulkActions);
+        }
+    });
+
+    function toggleBulkActions() {
+        const checked = document.querySelectorAll('.lead-checkbox:checked').length;
+        document.getElementById('bulkDeleteBtn').style.display = checked > 0 ? 'inline-block' : 'none';
+    }
+
+    // Delete lead
+    function deleteLead(leadId, username) {
+        document.getElementById('deleteLeadName').textContent = username;
+        document.getElementById('deleteForm').action = '/delete-lead/' + leadId;
+        new bootstrap.Modal(document.getElementById('deleteModal')).show();
+    }
+
+    // Bulk delete
+    document.getElementById('bulkDeleteBtn').addEventListener('click', function() {
+        const selected = Array.from(document.querySelectorAll('.lead-checkbox:checked')).map(cb => cb.value);
+        if (confirm(`Delete ${selected.length} selected leads?`)) {
+            // Implement bulk delete
+            console.log('Bulk delete:', selected);
+        }
+    });
+</script>
+{% endblock %}

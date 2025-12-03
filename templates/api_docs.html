@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %}API Documentation - Lead Generation App{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2 class="mb-4">
+        <i class="bi bi-code-square text-primary me-2"></i>
+        API Documentation
+    </h2>
+
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body">
+            <h4>Base URL</h4>
+            <pre>http://localhost:5000/api</pre>
+
+            <h4 class="mt-4">Authentication</h4>
+            <p>Currently no authentication required. Add API key in header for production:</p>
+            <pre>X-API-Key: your-api-key-here</pre>
+        </div>
+    </div>
+
+    <!-- Endpoints -->
+    <div class="accordion" id="apiAccordion">
+        <!-- GET /leads -->
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#endpoint1">
+                    <span class="badge bg-success me-2">GET</span> /api/leads
+                </button>
+            </h2>
+            <div id="endpoint1" class="accordion-collapse collapse show" data-bs-parent="#apiAccordion">
+                <div class="accordion-body">
+                    <p><strong>Description:</strong> Get all leads with optional filters</p>
+                    <p><strong>Parameters:</strong></p>
+                    <ul>
+                        <li>search (string): Search query</li>
+                        <li>platform (string): Filter by platform</li>
+                        <li>min_followers (int): Minimum followers</li>
+                        <li>min_engagement (float): Minimum engagement score</li>
+                        <li>limit (int): Results limit (max 1000)</li>
+                        <li>offset (int): Pagination offset</li>
+                    </ul>
+                    <p><strong>Example:</strong></p>
+                    <pre>curl http://localhost:5000/api/leads?platform=instagram&min_followers=1000</pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- POST /leads -->
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#endpoint2">
+                    <span class="badge bg-primary me-2">POST</span> /api/leads
+                </button>
+            </h2>
+            <div id="endpoint2" class="accordion-collapse collapse" data-bs-parent="#apiAccordion">
+                <div class="accordion-body">
+                    <p><strong>Description:</strong> Create a new lead</p>
+                    <p><strong>Body (JSON):</strong></p>
+                    <pre>{
+  "username": "johndoe",
+  "platform": "instagram",
+  "full_name": "John Doe",
+  "followers": 10000,
+  "engagement_score": 45.5
+}</pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- GET /stats -->
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#endpoint3">
+                    <span class="badge bg-success me-2">GET</span> /api/stats
+                </button>
+            </h2>
+            <div id="endpoint3" class="accordion-collapse collapse" data-bs-parent="#apiAccordion">
+                <div class="accordion-body">
+                    <p><strong>Description:</strong> Get database statistics</p>
+                    <p><strong>Example:</strong></p>
+                    <pre>curl http://localhost:5000/api/stats</pre>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

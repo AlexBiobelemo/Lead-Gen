@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Users List</h1>
+    <h1>Users List</h1>
+    <form method="GET" action="{{ url_for('users_list') }}" class="mb-4">
+        {{ form.hidden_tag() }}
+        <div class="input-group">
+            <label for="search" class="visually-hidden">Search users</label>
+            {{ form.search(class="form-control", placeholder="Search users...", id="search") }}
+            <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+    </form>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Member Since</th>
+                    <th>Last Seen</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.member_since.strftime('%Y-%m-%d') }}</td>
+                    <td>{{ user.last_seen.strftime('%Y-%m-%d %H:%M') if user.last_seen else 'N/A' }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="5">No users found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

@@ -1,0 +1,242 @@
+{% extends "base.html" %}
+
+{% block title %}Edit {{ lead.username }} - Lead Generation App{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Header -->
+            <div class="d-flex align-items-center mb-4">
+                <a href="{{ url_for('view_lead', lead_id=lead.id) }}" class="btn btn-outline-secondary me-3">
+                    <i class="bi bi-arrow-left"></i> Back
+                </a>
+                <h2 class="mb-0">
+                    <i class="bi bi-pencil-fill text-primary me-2"></i>
+                    Edit Lead: @{{ lead.username }}
+                </h2>
+            </div>
+
+            <!-- Form Card -->
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <form method="POST" action="{{ url_for('edit_lead', lead_id=lead.id) }}" novalidate>
+                        {{ form.hidden_tag() }}
+                        
+                        <!-- Required Information -->
+                        <h5 class="mb-3 text-primary">
+                            <i class="bi bi-info-circle me-2"></i>
+                            Required Information
+                        </h5>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="username" class="form-label">
+                                    Username <span class="text-danger">*</span>
+                                </label>
+                                {{ form.username(class="form-control" + (" is-invalid" if form.username.errors else "")) }}
+                                {% if form.username.errors %}
+                                    <div class="invalid-feedback">
+                                        {{ form.username.errors[0] }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="platform" class="form-label">
+                                    Platform <span class="text-danger">*</span>
+                                </label>
+                                {{ form.platform(class="form-select" + (" is-invalid" if form.platform.errors else "")) }}
+                                {% if form.platform.errors %}
+                                    <div class="invalid-feedback">
+                                        {{ form.platform.errors[0] }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <!-- Profile Information -->
+                        <h5 class="mb-3 text-primary">
+                            <i class="bi bi-person-circle me-2"></i>
+                            Profile Information
+                        </h5>
+                        
+                        <div class="mb-3">
+                            <label for="full_name" class="form-label">Full Name</label>
+                            {{ form.full_name(class="form-control" + (" is-invalid" if form.full_name.errors else "")) }}
+                            {% if form.full_name.errors %}
+                                <div class="invalid-feedback">
+                                    {{ form.full_name.errors[0] }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="bio" class="form-label">Bio</label>
+                            {{ form.bio(class="form-control" + (" is-invalid" if form.bio.errors else ""), rows="4") }}
+                            {% if form.bio.errors %}
+                                <div class="invalid-feedback">
+                                    {{ form.bio.errors[0] }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="location" class="form-label">Location</label>
+                                {{ form.location(class="form-control" + (" is-invalid" if form.location.errors else "")) }}
+                                {% if form.location.errors %}
+                                    <div class="invalid-feedback">
+                                        {{ form.location.errors[0] }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="profile_url" class="form-label">Profile URL</label>
+                                {{ form.profile_url(class="form-control" + (" is-invalid" if form.profile_url.errors else "")) }}
+                                {% if form.profile_url.errors %}
+                                    <div class="invalid-feedback">
+                                        {{ form.profile_url.errors[0] }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <!-- Contact Information -->
+                        <h5 class="mb-3 text-primary">
+                            <i class="bi bi-envelope-fill me-2"></i>
+                            Contact Information
+                        </h5>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                {{ form.email(class="form-control" + (" is-invalid" if form.email.errors else "")) }}
+                                {% if form.email.errors %}
+                                    <div class="invalid-feedback">
+                                        {{ form.email.errors[0] }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="website" class="form-label">Website</label>
+                                {{ form.website(class="form-control" + (" is-invalid" if form.website.errors else "")) }}
+                                {% if form.website.errors %}
+                                    <div class="invalid-feedback">
+                                        {{ form.website.errors[0] }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <!-- Metrics -->
+                        <h5 class="mb-3 text-primary">
+                            <i class="bi bi-graph-up me-2"></i>
+                            Metrics
+                        </h5>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="followers" class="form-label">Followers</label>
+                                {{ form.followers(class="form-control" + (" is-invalid" if form.followers.errors else "")) }}
+                                {% if form.followers.errors %}
+                                    <div class="invalid-feedback">
+                                        {{ form.followers.errors[0] }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="engagement_score" class="form-label">
+                                    Engagement Score (0-100)
+                                    <a href="{{ url_for('calculate_engagement') }}" class="text-decoration-none ms-2" target="_blank">
+                                        <i class="bi bi-calculator"></i> Calculate
+                                    </a>
+                                </label>
+                                {{ form.engagement_score(class="form-control" + (" is-invalid" if form.engagement_score.errors else "")) }}
+                                {% if form.engagement_score.errors %}
+                                    <div class="invalid-feedback">
+                                        {{ form.engagement_score.errors[0] }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <!-- Tags -->
+                        <h5 class="mb-3 text-primary">
+                            <i class="bi bi-tags-fill me-2"></i>
+                            Tags
+                        </h5>
+                        
+                        <div class="mb-3">
+                            <label for="tags" class="form-label">Tags (comma-separated)</label>
+                            {{ form.tags(class="form-control" + (" is-invalid" if form.tags.errors else "")) }}
+                            {% if form.tags.errors %}
+                                <div class="invalid-feedback">
+                                    {{ form.tags.errors[0] }}
+                                </div>
+                            {% endif %}
+                            <div class="form-text">Example: influencer, tech, marketing</div>
+                        </div>
+
+                        <!-- Submit Buttons -->
+                        <div class="d-flex gap-2 mt-4">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="bi bi-save me-2"></i>
+                                Update Lead
+                            </button>
+                            <a href="{{ url_for('view_lead', lead_id=lead.id) }}" class="btn btn-outline-secondary btn-lg">
+                                Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Last Updated Info -->
+            <div class="alert alert-info mt-4">
+                <i class="bi bi-clock-history me-2"></i>
+                <strong>Last updated:</strong> {{ lead.last_updated.strftime('%B %d, %Y at %I:%M %p') if lead.last_updated }}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Auto-format username (remove @ if entered)
+document.getElementById('username').addEventListener('input', function(e) {
+    if (e.target.value.startsWith('@')) {
+        e.target.value = e.target.value.substring(1);
+    }
+});
+
+// Warn before leaving with unsaved changes
+let formChanged = false;
+document.querySelector('form').addEventListener('change', function() {
+    formChanged = true;
+});
+
+window.addEventListener('beforeunload', function(e) {
+    if (formChanged) {
+        e.preventDefault();
+        e.returnValue = '';
+    }
+});
+
+document.querySelector('form').addEventListener('submit', function() {
+    formChanged = false;
+});
+</script>
+{% endblock %}
